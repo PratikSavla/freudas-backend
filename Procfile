@@ -1,0 +1,1 @@
+web: java -jar target/dev-1.0.1.jar
