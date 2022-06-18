@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,6 @@ public class UserService implements IUserService{
     final private PasswordEncoder passwordEncoder;
     final private TokenProvider tokenProvider;
     final private IBigFiveService bigFiveService;
-    final private MailUtils mailUtils;
 
     public UserService(UserRepository userRepository, AuthenticationManager authenticationManager,
                        PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
@@ -41,7 +39,6 @@ public class UserService implements IUserService{
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.bigFiveService = bigFiveService;
-        this.mailUtils = mailUtils;
     }
 
     @Override
@@ -95,12 +92,6 @@ public class UserService implements IUserService{
         String resetKey = HelperFunctions.generateRandomString(8);
         user.setResetKey(resetKey);
         User result = userRepository.save(user);
-        try {
-            mailUtils.sendVerificationEmail(signUpViewModel.getEmail(), resetKey);
-        } catch (MessagingException e){
-            this.userRepository.delete(user);
-            return new ApiResponse(false, "Error sending the email! Please use valid email");
-        }
         this.bigFiveService.addQuestionsToUser(result);
         return new ApiResponse(true, resetKey);
     }

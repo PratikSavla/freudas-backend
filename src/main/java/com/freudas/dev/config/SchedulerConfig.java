@@ -31,9 +31,13 @@ public class SchedulerConfig {
         this.chatService = chatService;
         this.bigFiveService = bigFiveService;
     }
+    @Scheduled(fixedDelay = 7 * 86400000, initialDelay = 1000)
+    public void addWeeklyBigFive() {
+        this.userService.getAllUsers().forEach(this.bigFiveService::addQuestionsToUser);
+    }
 
 //    7 days = 7 * 86400000 milliseconds
-//    @Scheduled(fixedDelay = 10000, initialDelay = 1000)
+    @Scheduled(fixedDelay = 7 * 86400000, initialDelay = 1000)
     public void scheduleQuestions() {
         List<WorkQuestion> availableQuestions = this.workQuestionService.getAvailableWorkQuestions();
         List<User> workUsers = this.userService.getAllWorkUsers();
@@ -51,7 +55,7 @@ public class SchedulerConfig {
         System.out.println("Added new questions on: "+ ZonedDateTime.now());
     }
     //    7 days = 7 * 86400000 milliseconds
-    //    @Scheduled(fixedDelay = 10000, initialDelay = 1000)
+//        @Scheduled(fixedDelay = 86400000, initialDelay = 1000)
     public void doAnalysis() {
         LocalDateTime timeStamp = LocalDateTime.now();
         this.userService.getAllWorkUsers().forEach(user -> {
@@ -69,8 +73,4 @@ public class SchedulerConfig {
         return newList;
     }
 
-//    @Scheduled(fixedDelay = 7 * 86400000, initialDelay = 1000)
-    public void addWeeklyBigFive() {
-        this.userService.getAllUsers().forEach(this.bigFiveService::addQuestionsToUser);
-    }
 }
