@@ -8,7 +8,6 @@ import com.freudas.dev.repository.UserRepository;
 import com.freudas.dev.security.TokenProvider;
 import com.freudas.dev.util.Constants;
 import com.freudas.dev.util.HelperFunctions;
-import com.freudas.dev.util.MailUtils;
 import com.freudas.dev.viewmodel.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +32,7 @@ public class UserService implements IUserService{
 
     public UserService(UserRepository userRepository, AuthenticationManager authenticationManager,
                        PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
-                       IBigFiveService bigFiveService, MailUtils mailUtils) {
+                       IBigFiveService bigFiveService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
