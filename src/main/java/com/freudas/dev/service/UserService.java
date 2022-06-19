@@ -84,6 +84,7 @@ public class UserService implements IUserService{
         } else {
             user.setRole(Constants.LIFE_USER_ROLE);
         }
+        user.setImageUrl(signUpViewModel.getImageUrl());
         user.setPassword(passwordEncoder.encode(signUpViewModel.getPassword()));
         user.setAdminBlocked(false);
         user.setLoginBlocked(true);
@@ -130,8 +131,9 @@ public class UserService implements IUserService{
     @Override
     public ApiResponse verifyEmail(String email, String resetKey) {
         User user = this.userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "Email", email));
-        if (user.getResetKey().equals(resetKey)) {
+        if (user.getResetKey() != null && user.getResetKey().equals(resetKey)) {
             user.setEmailVerified(true);
+            user.setLoginBlocked(false);
             user.setResetKey(null);
             this.userRepository.saveAndFlush(user);
             return new ApiResponse(true, "Email verified successfully!");
