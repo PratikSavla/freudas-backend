@@ -19,7 +19,7 @@ spring:
     password: postgres
   jpa:
     database: postgresql
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: update
     datasource:
