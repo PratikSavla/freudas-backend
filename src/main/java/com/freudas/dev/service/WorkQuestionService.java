@@ -85,7 +85,7 @@ public class WorkQuestionService implements IWorkQuestionService{
         User user = this.userService.getUserById(userId);
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
         LocalDateTime endDate = today.plusDays(1).atStartOfDay();
-        LocalDateTime startDate = endDate.minusYears(1);
+        LocalDateTime startDate = endDate.minusMonths(4);
 
         UserAnalysisViewModel viewModel = new UserAnalysisViewModel();
         viewModel.setUserId(userId);
